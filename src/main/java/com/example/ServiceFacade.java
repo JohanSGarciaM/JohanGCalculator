@@ -5,10 +5,14 @@ import java.net.*;
 
 public class ServiceFacade {
 
+
+
+
+    private static ServiceFacade instance = null;
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String GET_URL = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=fb&apikey=Q1QZFVJQ21K7C6XM";
 
-    public static void main(String[] args) throws IOException {
+    public String calculate(String path) throws IOException{
 
         URL obj = new URL(GET_URL);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -20,8 +24,7 @@ public class ServiceFacade {
         System.out.println("GET Response Code :: " + responseCode);
         
         if (responseCode == HttpURLConnection.HTTP_OK) { // success
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
 
@@ -29,13 +32,20 @@ public class ServiceFacade {
                 response.append(inputLine);
             }
             in.close();
-
-            // print result
-            System.out.println(response.toString());
+            return response.toString();
         } else {
-            System.out.println("GET request not worked");
+            return "GET request not worked";
         }
-        System.out.println("GET DONE");
+
+
+
+    }
+
+    public static ServiceFacade getInstance() {
+        if(instance == null){
+            instance = new ServiceFacade();
+        }
+        return instance;
     }
 
 } 

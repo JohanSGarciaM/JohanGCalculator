@@ -3,8 +3,8 @@ package com.example;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import java.net.*;
 import java.io.*;
+import org.json.JSONObject;
 
 public class HttpServer {
     public static void main(String[] args) throws IOException {
@@ -45,13 +45,15 @@ public class HttpServer {
                     break;
                 }
             }
-            outputLine = "HTTP/1.1 200 OK \r\n";
+            outputLine = "HTTP/1.1 200 OK \r\n"
+                + "Content-Type: text/html\r\n"
+                + "\r\n";
 
             System.out.println(path);
             if (path.startsWith("/calculadora")) {
-                outputLine += calculate(path);
-            } else {
                 outputLine += getResponse();
+            } else {
+                outputLine += calculate(path);
             }
 
             out.println(outputLine);
@@ -82,9 +84,15 @@ public class HttpServer {
 
     }
 
-    private static String calculate(String path) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculate'");
+    private static String calculate(String path) throws IOException {
+        ServiceFacade fachada = ServiceFacade.getInstance();
+        String info = fachada.calculate(path);
+        JSONObject resp = new JSONObject(info);
+        String response = "Content-Type: text/json \r\n"
+                + "\r\n";
+                
+
+        return response;
     }
 
     public static String getResponse() {

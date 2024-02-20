@@ -26,7 +26,7 @@ mvn exec:java
 A partir de este momento el socket esta activo para recibir la información al puerto 35000 por lo que nos dirijimos desde nuestro browser al puerto, seguido del nombre del archivo que deseamos obtener junto con su extensión.
 
 ```
-localhost:36000
+localhost:36000/calculadora
 ```
 
 Para poder revisar la documentación del proyecto es necesario ejecutar el siguiente comando en la terminar para que se ejecute en el navegador.
